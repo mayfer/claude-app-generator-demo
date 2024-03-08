@@ -1,6 +1,9 @@
 
 import sqlite3 from 'sqlite3';
 
+// Import the 'User' type from the appropriate module
+import { User, Stroke } from '../shared/types';
+
 const db = new sqlite3.Database('db.sqlite');
 
 export function initDb() {
@@ -73,9 +76,8 @@ export function getStrokes(): Promise<Stroke[]> {
       if (err) {
         reject(err);
       } else {
-        const strokes = rows.map((row) => ({
-          ...row,
-          points: JSON.parse(row.points),
+        const strokes = rows.map((row: any) => ({ // Add type assertion to specify the type of 'row'
+          ...row, points: JSON.parse(row.points),
         }));
         resolve(strokes);
       }
